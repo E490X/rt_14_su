@@ -358,9 +358,10 @@ function Phonestorage() {
                 color="inherit"
                 sx={{ fontWeight: "500" }}
               >
-                iPhone 426.30 GB used out of 512 GB
+                Syncing....
+                {/* iPhone 426.30 GB used out of 512 GB */}
               </Typography>
-              <Typography
+              {/* <Typography
                 variant="h4"
                 color="inherit"
                 sx={{ fontWeight: "500" }}
@@ -371,7 +372,7 @@ function Phonestorage() {
                 <br />
                 Recently Deleted: 94 items
                 <br />
-              </Typography>
+              </Typography> */}
             </div>
             {!filesDetail && data.length > 0 ? (
               <>

