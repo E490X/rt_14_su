@@ -142,15 +142,7 @@ const CallLogs = () => {
               color="primary"
               label={params.row.callTypes}
             />
-          ) : params.row.callTypes === "FaceTimeAudio" ? (
-            <Chip
-              icon={
-                <HeadsetMicIcon sx={{ color: "white", fontSize: "16px" }} />
-              }
-              color="secondary"
-              label="FaceTime Audio"
-            />
-          ) : (
+          ) :  (
             <Chip
               icon={
                 params.row.callTypes === "MissedCalls" ? (
@@ -190,19 +182,31 @@ const CallLogs = () => {
       },
     },
     {
-      field: "faceTimeBadge",
+      field: "audioTypeBadge",
       headerName: "",
       flex: 0.6,
       sortable: false,
-      renderCell: (params) =>
-        params.row.isFaceTimeAudio ? (
-          <Chip
-            // icon={<HeadsetMicIcon sx={{ color: "white", fontSize: "14px" }} />}
-            label="FaceTime"
-            size="small"
-            sx={{ backgroundColor: "#34DA4F", color: "white", fontWeight: 600 }}
-          />
-        ) : null,
+      renderCell: (params) => {
+        if (params.row.audioType === "FaceTime") {
+          return (
+            <Chip
+              label="FaceTime"
+              size="small"
+              sx={{ backgroundColor: "#34DA4F", color: "white", fontWeight: 600 }}
+            />
+          );
+        }
+        if (params.row.audioType === "Whatsapp") {
+          return (
+            <Chip
+              label="WhatsApp"
+              size="small"
+              sx={{ backgroundColor: "#25D366", color: "white", fontWeight: 600 }}
+            />
+          );
+        }
+        return null;
+      },
     },
     {
       field: "actions",
