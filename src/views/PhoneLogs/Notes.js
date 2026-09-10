@@ -16,6 +16,7 @@ import Modal from "@mui/material/Modal";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { FaTrash } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -30,6 +31,8 @@ import ApiUtils from "api/ApiUtils";
 import { ToasterMessage } from "helper/ToasterHelper";
 import { useDevice } from "contexts/DeviceContext";
 import CommonModal from "views/CommonModal";
+import CommonDeleteModal from "views/CommonDeleteModal";
+import useCommonCheckbox from "views/useCommonCheckbox";
 
 const validationSchema = Yup.object({
   title: Yup.string().max(50, "Max 50 characters").required("Title is required"),
@@ -61,6 +64,25 @@ const Notes = () => {
     params,
     currentPageNumber
   );
+  const { setParentChecked, setChildCheckedState } = useCommonCheckbox(
+    data,
+    "notesId"
+  );
+
+  const handleDelete = async (ids) => {
+    await CommonDeleteModal({
+      data: ids,
+      fetchData,
+      onError: (error) => {
+        console.error("Delete error:", error);
+      },
+      deleteFuntion: ApiUtils.DeleteRange,
+      Url: "Notes/DeleteRange",
+      setParentChecked,
+      setChildCheckedState,
+      params,
+    });
+  };
 
   const handlePaginationModelChange = (page) => {
     setCurrentPageNumber(page.page + 1);
@@ -113,6 +135,11 @@ const Notes = () => {
           icon={<RemoveRedEyeIcon />}
           label="view"
           onClick={() => showNoteModal(params)}
+        />,
+        <GridActionsCellItem
+          icon={<FaTrash color="red" size={18} />}
+          label="delete"
+          onClick={() => handleDelete([params.row.notesId])}
         />,
       ],
     },
