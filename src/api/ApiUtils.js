@@ -27,6 +27,26 @@ const ApiUtils = {
       throw error.response;
     }
   },
+  getNotes: async function (params) {
+    try {
+      const response = await api.get(`/Notes?${params}`);
+      return response;
+    } catch (error) {
+      throw error.response;
+    }
+  },
+  AddNote: async function (params, imeiNumber) {
+    try {
+      const response = await api.post(`/Notes/AddNotes`, params, {
+        headers: {
+          imeinumber: imeiNumber,
+        },
+      });
+      return response;
+    } catch (error) {
+      throw error.response;
+    }
+  },
   getSignalByContactPersonName: async function (params) {
     try {
       const response = await api.get(

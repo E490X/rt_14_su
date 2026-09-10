@@ -29,6 +29,7 @@ import {
   FaHeartPulse,
   FaLinkedin,
   FaCloudArrowUp,
+  FaNoteSticky,
 } from "react-icons/fa6";
 import { RiWhatsappFill } from "react-icons/ri";
 // constant
@@ -62,6 +63,7 @@ const icons = {
   FaHeartPulse,
   FaLinkedin,
   FaCloudArrowUp,
+  FaNoteSticky,
   RiWhatsappFill,
 };
 
@@ -113,10 +115,19 @@ const utilities = {
         {
           id: "contacts-logs",
           title: "Contacts",
-          type: "item", 
+          type: "item",
           url: "/user/contacts",
           icon: icons.FaAddressBook,
           breadcrumbs: false,
+        },
+        {
+          id: "notes-logs",
+          title: "Notes",
+          type: "item",
+          url: "/user/notes",
+          icon: icons.FaNoteSticky,
+          breadcrumbs: false,
+          iosOnly: true,
         },
         // {
         //   id: "internet-history-logs",

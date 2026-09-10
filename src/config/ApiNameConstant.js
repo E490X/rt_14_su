@@ -24,4 +24,5 @@ export const GET_MANAGE_UPLOADS_LOGS = "getScheduledUploads"
 export const GET_APPLE_HEALTH_LOGS = "getAppleHealthLogs"
 export const GET_LINKEDIN_LOGS = "getLinkedInLogs"
 export const GET_SIGNAL_LOGS = "getSignalLogs"
+export const GET_NOTES_LOGS = "getNotes"
 
