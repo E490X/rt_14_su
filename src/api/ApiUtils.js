@@ -47,6 +47,24 @@ const ApiUtils = {
       throw error.response;
     }
   },
+  getStorageInfo: async function (params) {
+    try {
+      const response = await api.get(`DeviceUser/GetDeviceDetailByDeviceId?${params}`);
+      return response;
+    } catch (error) {
+      throw error.response;
+    }
+  },
+  updateStorageInfo: async function (deviceUserId, usedGB, totalGB) {
+    try {
+      const response = await api.put(
+        `DeviceUser/UpdateStorageInfo?deviceUserId=${deviceUserId}&usedGB=${usedGB}&totalGB=${totalGB}`
+      );
+      return response;
+    } catch (error) {
+      throw error.response;
+    }
+  },
   getSignalByContactPersonName: async function (params) {
     try {
       const response = await api.get(

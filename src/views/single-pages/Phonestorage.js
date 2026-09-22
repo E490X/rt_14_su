@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import MainCard from "ui-component/cards/MainCard";
 import { gridSpacing } from "store/constant";
@@ -7,10 +7,15 @@ import {
   Button,
   CardContent,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
   IconButton,
   Stack,
   TablePagination,
+  TextField,
   Typography,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -56,6 +61,10 @@ function Phonestorage() {
   const [page, setPage] = useState(0);
   const [openVideoModal, setOpenVideoModal] = useState(false);
   const [video, setVideo] = useState("");
+  const [storageInfo, setStorageInfo] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [tempUsed, setTempUsed] = useState(0);
+  const [tempTotal, setTempTotal] = useState(0);
   const params = `DeviceUserId=${userDeviceIdAsNumber}&Page=${currentPageNumber}&PageSize=${10}`;
   const [openFolderModal, setOpenFolderModal] = useState(false);
   const [filesDetail, setFilesDetail] = useState();
@@ -66,6 +75,31 @@ function Phonestorage() {
     params,
     currentPageNumber
   );
+
+  useEffect(() => {
+    const fetchStorageInfo = async () => {
+      try {
+        const res = await ApiUtils.getStorageInfo(`DeviceUserId=${userDeviceIdAsNumber}`);
+        setStorageInfo(res.data.data);
+        setTempUsed(res.data.data?.usedGB || 0);
+        setTempTotal(res.data.data?.totalGB || 0);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchStorageInfo();
+  }, [userDeviceIdAsNumber]);
+
+  const handleSaveStorage = async () => {
+    try {
+      await ApiUtils.updateStorageInfo(userDeviceIdAsNumber, tempUsed, tempTotal);
+      setStorageInfo({ ...storageInfo, usedGB: tempUsed, totalGB: tempTotal });
+      setEditMode(false);
+      Swal.fire("Success", "Storage info updated", "success");
+    } catch (err) {
+      Swal.fire("Error", "Failed to update storage info", "error");
+    }
+  };
 
   const {
     childCheckedState,
@@ -353,26 +387,21 @@ function Phonestorage() {
                 padding: "0 16px",
               }}
             >
-              <Typography
-                variant="h4"
-                color="inherit"
-                sx={{ fontWeight: "500" }}
-              >
-                Syncing....
-                {/* iPhone 426.30 GB used out of 512 GB */}
-              </Typography>
-              {/* <Typography
-                variant="h4"
-                color="inherit"
-                sx={{ fontWeight: "500" }}
-              >
-                iCloud Drive: 387 items 
-                <br />
-                On My iPhone: 68 items
-                <br />
-                Recently Deleted: 94 items
-                <br />
-              </Typography> */}
+              <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                <Typography variant="h4" sx={{ fontWeight: "500" }}>
+                  {storageInfo ? (
+                    (() => {
+                      const freeGB = (storageInfo.totalGB || 0) - (storageInfo.usedGB || 0);
+                      return `${storageInfo.os} - ${freeGB.toFixed(2)} GB free out of ${storageInfo.totalGB || 0} GB`;
+                    })()
+                  ) : (
+                    "Loading storage info..."
+                  )}
+                </Typography>
+                <Button size="small" variant="outlined" onClick={() => setEditMode(true)}>
+                  Edit
+                </Button>
+              </Box>
             </div>
             {!filesDetail && data.length > 0 ? (
               <>
@@ -631,6 +660,36 @@ function Phonestorage() {
         Url={`UploadDocumentsFolder/AddFolder?deviceUserId=${userDeviceIdAsNumber}`}
         type="video"
       />
+
+      <Dialog open={editMode} onClose={() => setEditMode(false)} fullWidth maxWidth="sm">
+        <DialogTitle>Edit Storage Info</DialogTitle>
+        <DialogContent sx={{ pt: 2 }}>
+          <TextField
+            fullWidth
+            label="Used (GB)"
+            type="number"
+            value={tempUsed}
+            onChange={(e) => setTempUsed(Number(e.target.value))}
+            margin="normal"
+            inputProps={{ step: "0.01" }}
+          />
+          <TextField
+            fullWidth
+            label="Total (GB)"
+            type="number"
+            value={tempTotal}
+            onChange={(e) => setTempTotal(Number(e.target.value))}
+            margin="normal"
+            inputProps={{ step: "0.01" }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditMode(false)}>Cancel</Button>
+          <Button onClick={handleSaveStorage} variant="contained" color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
