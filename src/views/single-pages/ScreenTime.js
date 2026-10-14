@@ -74,14 +74,52 @@ const ScreenTime = () => {
       .catch((err) => console.log(err));
   };
 
+  // Top 5 apps by screen time usage (app-wise division), from the real API data
+  const APP_USAGE_BLUE_TONES = ["#0D47A1", "#1565C0", "#1E88E5", "#64B5F6", "#BBDEFB"];
+  const [topFiveAppsUsage, setTopFiveAppsUsage] = useState([]);
+
+  useEffect(() => {
+    const paramsForScreenTime = `DeviceUserId=${userDeviceIdAsNumber}&Page=1&PageSize=10000`;
+    ApiUtils.getScreenTimeDetail(paramsForScreenTime)
+      .then((res) => {
+        const logs = res?.data?.data?.listResponse || [];
+        const appUsageMap = new Map();
+
+        logs.forEach((log) => {
+          const appName = log.appName;
+          if (!appName) return;
+          const duration = Number(log.screenTimeDuration) || 0;
+          appUsageMap.set(appName, (appUsageMap.get(appName) || 0) + duration);
+        });
+
+        const sortedApps = Array.from(appUsageMap.entries())
+          .map(([appName, screenTimeDuration]) => ({ appName, screenTimeDuration }))
+          .sort((a, b) => b.screenTimeDuration - a.screenTimeDuration)
+          .slice(0, 5)
+          .map((app, index) => ({
+            ...app,
+            color: APP_USAGE_BLUE_TONES[index],
+          }));
+
+        setTopFiveAppsUsage(sortedApps);
+      })
+      .catch((err) => console.log(err));
+  }, [userDeviceIdAsNumber]);
+
+  const screenTimeLegend = topFiveAppsUsage.map((app) => ({
+    label: app.appName,
+    value: app.screenTimeDuration,
+    color: app.color,
+  }));
+
   const chartData = {
-    labels: ["Total Minutes", "Screen Time"],
+    labels: screenTimeLegend.map((item) => item.label),
     datasets: [
       {
         label: "Total",
-        data: [totalTime, totalScreenTime],
-        backgroundColor: ["#2196F3", "#E3F2FD"],
-        borderColor: ["#2196F3", "#a6d4f9"],
+        data: screenTimeLegend.map((item) => item.value),
+        backgroundColor: screenTimeLegend.map((item) => item.color),
+        borderColor: screenTimeLegend.map((item) => item.color),
         borderWidth: 1,
       },
     ],
@@ -213,11 +251,12 @@ const ScreenTime = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        display: false,
       },
-      title: {
-        display: true,
-        text: "Number of Downloads",
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.label}: ${timeFormat(context.parsed)}`,
+        },
       },
     },
   };
@@ -295,7 +334,50 @@ const ScreenTime = () => {
           <MainCard content={false} title="Total Screen Time">
             <CardContent className="contacts-list">
               <Box sx={{ width: "280px", height: "280px", margin: "0 auto" }}>
-                <Pie data={chartData} options={options} />
+                {topFiveAppsUsage.length > 0 ? (
+                  <Pie data={chartData} options={options} />
+                ) : (
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "50%",
+                      backgroundColor: "#2196F3",
+                    }}
+                  />
+                )}
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                {screenTimeLegend.map((item) => (
+                  <Box
+                    key={item.label}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      py: 0.75,
+                    }}
+                  >
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          backgroundColor: item.color,
+                          border: "1px solid rgba(0, 0, 0, 0.12)",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <Typography variant="body2" color="textSecondary">
+                        {item.label}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      {timeFormat(item.value)}
+                    </Typography>
+                  </Box>
+                ))}
               </Box>
             </CardContent>
           </MainCard>

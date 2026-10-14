@@ -363,7 +363,7 @@ function ListOfDevices() {
       isConnectedWithWifi: formData.isConnectedWithWifi == "1" ? true : false,
       batteryPercentage: Number(formData.batteryPercentage),
     };
-
+ 
     try {
       const response = formData?.deviceUserId
         ? await ApiUtils.updateUserAll(payload, formData?.deviceUserId)

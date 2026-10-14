@@ -259,14 +259,14 @@ const utilities = {
     //   icon: icons.FaExpand,
     //   breadcrumbs: false,
     // },
-    // {
-    //   id: "screen-time",
-    //   title: "Screen Time",
-    //   type: "item",
-    //   url: "/user/screen-time",
-    //   icon: icons.FaClock,
-    //   breadcrumbs: false,
-    // },
+    {
+      id: "screen-time",
+      title: "Screen Time",
+      type: "item",
+      url: "/user/screen-time",
+      icon: icons.FaClock,
+      breadcrumbs: false,
+    },
     // {
     //   id: "key-logger",
     //   title: "Key Logger",

@@ -20,7 +20,7 @@ import InstalledApps from "views/single-pages/InstalledApps";
 // import LineLogs from "views/MessagesLogs/LineLogs";
 // import TinderLogs from "views/MessagesLogs/TinderLogs";
 // import ViberLogs from "views/MessagesLogs/ViberLogs";
-// import ScreenTime from "views/single-pages/ScreenTime";
+import ScreenTime from "views/single-pages/ScreenTime";
 // import KeyLogger from "views/single-pages/KeyLogger";
 // import RemoteControl from "views/single-pages/RemoteControl";
 // import FacebookLogs from "views/MessagesLogs/FacebookLogs";
@@ -74,7 +74,7 @@ const privateRoutes = [
   // { path: "/user/line/:userDeviceId", component: LineLogs },
   // { path: "/user/tinder/:userDeviceId", component: TinderLogs },
   // { path: "/user/viber/:userDeviceId", component: ViberLogs },
-  // { path: "/user/screen-time/:userDeviceId", component: ScreenTime },
+  { path: "/user/screen-time/:userDeviceId", component: ScreenTime },
   // { path: "/user/keylogger/:userDeviceId", component: KeyLogger },
   // { path: "/user/remote-control/:userDeviceId", component: RemoteControl },
   { path: "/user/signal/:userDeviceId", component: SignalLogs },
