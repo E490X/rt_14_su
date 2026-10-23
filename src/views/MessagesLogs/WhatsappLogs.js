@@ -192,7 +192,7 @@ const WhatsappLogs = () => {
       ),
     },
     { field: "contactPersonName", headerName: "Name", flex: 1 },
-    // { field: "contactNumber", headerName: "Number", flex: 1 },
+    { field: "contactNumber", headerName: "Number", flex: 1 },
     { field: "message", headerName: "Message", flex: 1 },
     {
       field: "time",
